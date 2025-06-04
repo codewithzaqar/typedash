@@ -2,13 +2,13 @@ from rich.align import Align
 from rich.text import Text
 from textual.app import App
 from textual.layouts.dock import DockLayout
-from textual.widgets import Static
+from textual.widgets import Static, Header
 from textual import events
 
 from rich.panel import Panel
 from os import get_terminal_size as termsize
 
-from widgets.button import Button
+from ui.widgets import Button
 
 percent = lambda part, total: int(part * total / 100)
 
@@ -55,7 +55,9 @@ class TypeDash(App):
     async def load_main_menu(self):
         await self.clear_screen()
         await self.view.dock(self.banner, size=percent(30, self.y))
-        await self.view.dock(self.bt_typing_space, self.bt_settings, self.bt_quit)
+        await self.view.dock(
+            self.bt_typing_space, self.bt_settings, self.bt_quit, size=8
+        )
 
     async def load_settings(self):
         pass
@@ -69,6 +71,3 @@ class TypeDash(App):
     async def handle_button_clicked(self, e: events.Click):
         if getattr(e.sender, "name") == "bt_quit":
             await self.action_quit()
-
-
-TypeDash.run()
